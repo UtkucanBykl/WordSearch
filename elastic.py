@@ -8,14 +8,33 @@ class Elastic:
 
     def search_with_count(self, gte, index="words", doc_type="words"):
 
-        body = {"query": {
-            "range": {
-                "count": {
-                    "gte": int(gte),
-                }
+        body = {
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+              "letters":{
+                    "query":"a b d",
+                  "operator": "and"
+              }
+
+          }
+        },
+        {
+          "range": {
+            "count": {
+              "gte": 10
             }
+          }
         }
-        }
+      ],
+      "minimum_should_match": 2
+    }
+  }
+}
+
+
         result = self.__es.search(index=index, doc_type=doc_type, body=body)
         return [x for x in result["hits"]["hits"]]
 

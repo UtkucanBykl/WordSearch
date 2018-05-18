@@ -4,9 +4,11 @@ es = Elasticsearch()
 
 with open("english-words/words.txt", "r") as f:
     for count, line in enumerate(f):
+        word = str(line).split("\n")[0]
         doc = {
-            "word": str(line).split("\n")[0],
-            "count": len(line)
+            "word": word,
+            "count": len(line),
+            "letters": list(word)
         }
         print(doc)
         print(count)
