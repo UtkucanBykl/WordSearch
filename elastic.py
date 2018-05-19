@@ -6,7 +6,7 @@ class Elastic:
 
         self.__es = Elasticsearch()
 
-    def search_with_count(self, gte, index="words", doc_type="words"):
+    def search_with_count(self, gte, letters, index="words", doc_type="words"):
 
         body = {
   "query": {
@@ -14,8 +14,8 @@ class Elastic:
       "should": [
         {
           "match": {
-              "letters":{
-                    "query":"a b d",
+              "letters": {
+                    "query": letters,
                   "operator": "and"
               }
 
@@ -24,12 +24,11 @@ class Elastic:
         {
           "range": {
             "count": {
-              "gte": 10
+              "gte": gte
             }
           }
         }
       ],
-      "minimum_should_match": 2
     }
   }
 }
@@ -39,6 +38,6 @@ class Elastic:
         return [x for x in result["hits"]["hits"]]
 
 e = Elastic()
-a = e.search_with_count(index="words", gte=20)
+a = e.search_with_count(index="words", gte=10, letters="a b c d")
 for b in a:
     print(b["_source"])
