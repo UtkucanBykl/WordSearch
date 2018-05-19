@@ -10,8 +10,9 @@ Finds words containing the given letters
 from elastic import Elastic
 
 e = Elastic()
-data = e.search_with_count(letters="a b c", gte=10, index="your_index", doc_type="your_doc_type")
-
+e.word = "d e"
+e.count = 10
+data = e.search_with_count(index="your_index", doc_type="yor_doc_type")
 for word in data:
     print(word["_source"])
 

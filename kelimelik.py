@@ -1,37 +1,37 @@
 class Word:
 
     def __init__(self):
-        self.__count = 2
-        self.__word = ""
-        self.__joker = False
+        self._count = 2
+        self._word = ""
+        self._joker = False
 
     @property
     def count(self):
-        return self.__count
+        return self._count
 
     @property
     def word(self):
-        return self.__word
+        return self._word
 
     @property
     def joker(self):
-        return self.__joker
+        return self._joker
 
     @word.setter
     def word(self, word):
-        self.__word = str(word)
+        self._word = str(word)
 
     @count.setter
     def count(self, count):
         if count > 2:
-            self.__count = count
+            self._count = count
         else:
-            self.__count = 1
+            self._count = 1
 
     @joker.setter
     def joker(self, joker):
         try:
-            self.__joker = bool(joker)
+            self._joker = bool(joker)
         except:
-            self.__joker = False
+            self._joker = False
             raise BaseException("Joker must be Bool")

@@ -1,13 +1,16 @@
 from elasticsearch import Elasticsearch
 
-class Elastic:
+from kelimelik import Word
+
+
+class Elastic(Word):
 
     def __init__(self):
 
         self.__es = Elasticsearch()
+        super(Word).__init__()
 
-    def search_with_count(self, gte, letters, index="words", doc_type="words"):
-
+    def search_with_count(self, index="words", doc_type="words"):
         body = {
   "query": {
     "bool": {
@@ -15,7 +18,7 @@ class Elastic:
         {
           "match": {
               "letters": {
-                    "query": letters,
+                    "query": self.word,
                   "operator": "and"
               }
 
@@ -24,7 +27,7 @@ class Elastic:
         {
           "range": {
             "count": {
-              "gte": gte
+              "gte": self.count
             }
           }
         }
@@ -37,7 +40,10 @@ class Elastic:
         result = self.__es.search(index=index, doc_type=doc_type, body=body)
         return [x for x in result["hits"]["hits"]]
 
+
 e = Elastic()
-a = e.search_with_count(index="words", gte=10, letters="a b c d")
-for b in a:
-    print(b["_source"])
+e.word = "d e"
+e.count = 10
+data = e.search_with_count()
+for word in data:
+    print(word["_source"])
